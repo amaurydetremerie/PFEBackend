@@ -4,7 +4,7 @@ using Microsoft.Identity.Web.Resource;
 
 namespace PFEBackend.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("[controller]")]
     //[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
