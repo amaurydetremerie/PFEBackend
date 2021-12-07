@@ -4,9 +4,8 @@ using Microsoft.Identity.Web.Resource;
 
 namespace PFEBackend.Controllers
 {
-    [Authorize]
     [ApiController]
-    [Route("[controller]")]
+    [Route("WeatherForecast")]
     public class WeatherForecastController : ControllerBase
     {
         static readonly string[] scopeRequiredByApi = new string[] { "access_as_user" };
@@ -25,7 +24,8 @@ namespace PFEBackend.Controllers
             _logger = logger;
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
+        [HttpGet]
+        [Authorize]
         public IEnumerable<WeatherForecast> Get()
         {
             HttpContext.VerifyUserHasAnyAcceptedScope(scopeRequiredByApi);
@@ -38,10 +38,9 @@ namespace PFEBackend.Controllers
             .ToArray();
         }
 
-        [HttpGet(Name = "GetWeatherForecastFree")]
+        [HttpGet("/free")]
         public IEnumerable<WeatherForecast> GetFree()
         {
-            HttpContext.VerifyUserHasAnyAcceptedScope(emptyScope);
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateTime.Now.AddDays(index),
