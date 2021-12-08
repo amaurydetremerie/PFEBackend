@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Web.Resource;
+using PFEBackend.Models;
 
 namespace PFEBackend.Controllers
 {
@@ -8,20 +8,21 @@ namespace PFEBackend.Controllers
     [Route("WeatherForecast")]
     public class WeatherForecastController : ControllerBase
     {
-        static readonly string[] scopeRequiredByApi = new string[] { "access_as_user" };
-
-        static readonly string[] emptyScope = new string[] {};
+        private VinciMarketContext _context;
+        private IConfiguration _configuration;
 
         private static readonly string[] Summaries = new[]
         {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
+            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+        };
 
         private readonly ILogger<WeatherForecastController> _logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, VinciMarketContext context, IConfiguration config)
         {
             _logger = logger;
+            _context = context;
+            _configuration = config;
         }
 
         [HttpGet]
@@ -47,6 +48,13 @@ namespace PFEBackend.Controllers
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
             })
             .ToArray();
+        }
+
+        [HttpGet("/config")]
+        [AllowAnonymous]
+        public string? GetConfig()
+        {
+            return _configuration.GetConnectionString("DB");
         }
 
         [HttpGet("/administrator")]
