@@ -12,13 +12,15 @@ variables:
   dotNetVersion: '6.0.x'
   targetRuntime: 'linux-x64'
 
-- task: PublishPipelineSource@1
+
+steps:
+
+- task: CopyFiles@1
   inputs:
-    targetPath: '$(Build.ArtifactStagingDirectory)' 
-    artifactName: 'Soure'
+    contents: '**'
+    targetFolder: '$(Build.ArtifactStagingDirectory)/Source' 
 
 # Build the app for .NET 6 framework
-steps:
 - task: UseDotNet@2
   inputs:
     version: $(dotNetVersion)
