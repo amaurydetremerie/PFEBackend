@@ -14,12 +14,6 @@ variables:
 
 
 steps:
-
-- task: CopyFiles@1
-  inputs:
-    contents: '**'
-    targetFolder: '$(Build.ArtifactStagingDirectory)/Source' 
-
 # Build the app for .NET 6 framework
 - task: UseDotNet@2
   inputs:
