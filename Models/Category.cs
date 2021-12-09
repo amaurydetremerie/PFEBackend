@@ -8,11 +8,15 @@ namespace PFEBackend.Models
         [Key]
         public int Id { get; set; }
 
-        [ForeignKey("Category")]
-        public int CategoryId { get; set; }
-        public virtual Category? Parent { get; set; }
-
         [Required]
         public string Name { get; set; }
+
+        [ForeignKey("Category")]
+        public int? ParentId { get; set; }
+
+
+        // Pour les propriétés de navigation
+        public virtual Category? Parent { get; set; }
+        public ICollection<Category>? ChildCategories { get; set;}
     }
 }

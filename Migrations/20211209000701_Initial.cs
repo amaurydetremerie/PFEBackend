@@ -4,7 +4,7 @@
 
 namespace PFEBackend.Migrations
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,9 +14,8 @@ namespace PFEBackend.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CategoryId = table.Column<int>(type: "int", nullable: false),
-                    ParentId = table.Column<int>(type: "int", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ParentId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -73,6 +72,49 @@ namespace PFEBackend.Migrations
                         principalTable: "Offers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "Id", "Name", "ParentId" },
+                values: new object[,]
+                {
+                    { 1, "Maison et Jardin", null },
+                    { 7, "Famille", null },
+                    { 12, "Vêtements et accessoires", null },
+                    { 17, "Loisirs - hobbys", null },
+                    { 26, "Electronique", null },
+                    { 29, "Autres", null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "Id", "Name", "ParentId" },
+                values: new object[,]
+                {
+                    { 2, "Outils", 1 },
+                    { 3, "Meubles", 1 },
+                    { 4, "Pour la maison", 1 },
+                    { 5, "Jardin", 1 },
+                    { 6, "Electroménager", 1 },
+                    { 8, "Santé et beauté", 7 },
+                    { 9, "Fournitures pour animaux", 7 },
+                    { 10, "Puériculture et enfants", 7 },
+                    { 11, "Jouets et jeux", 7 },
+                    { 13, "Sacs et bagages", 12 },
+                    { 14, "Vêtements et chaussures femmes", 12 },
+                    { 15, "Vêtements et chaussures hommes", 12 },
+                    { 16, "Bijoux et accessoires", 12 },
+                    { 18, "Vélos", 17 },
+                    { 19, "Loisirs créatifs", 17 },
+                    { 20, "Pièces auto", 17 },
+                    { 21, "Sports et activités d’extérieures", 17 },
+                    { 22, "Jeux vidéo", 17 },
+                    { 23, "Livres, films et musique", 17 },
+                    { 24, "Instruments de musique", 17 },
+                    { 25, "Antiquité et objets de collection", 17 },
+                    { 27, "Electronique et ordinateurs", 26 },
+                    { 28, "Téléphones mobiles", 26 }
                 });
 
             migrationBuilder.CreateIndex(
