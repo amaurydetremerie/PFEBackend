@@ -26,6 +26,9 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
+    },
+    "ConnectionStrings": {
+      "DevConnection":  "Server=(local)\\sqlexpress;Database=VinciMarketDB;Trusted_Connection=True;MultipleActiveResultSets=True;"
     }
   }
 }
