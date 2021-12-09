@@ -39,7 +39,7 @@ namespace PFEBackend.Repository
             return _context.Categories.Find(id).ChildCategories.ToArray();
         }
 
-        public void UpdateCategory(int id, Category category)
+        public void UpdateCategory(Category category)
         {
             _context.Categories.Update(category);
             _context.SaveChanges();
