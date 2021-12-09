@@ -28,6 +28,8 @@ namespace PFEBackend.Models
         [Required]
         public string Seller { get; set; }
 
+        public int count_report { get; set; }
+
         [Required]
         public int CategoryId { get; set; }
         public virtual Category Parent { get; set; }
