@@ -28,8 +28,31 @@ namespace PFEBackend.Controllers
             return _repositoryCategory.GetById(id);
         }
 
+        [HttpGet]
+        [Route("/parent/{id}")]
+        public IEnumerable<Category> GetByParent(int id)
+        {
+            return _repositoryCategory.GetByParent(id);
+        }
+
         [HttpPost]
+        public void AddCategory([FromBody] Category category)
+        {
+            _repositoryCategory.AddCategory(category);
+        }
+
         [HttpDelete]
+        [Route("/{id}")]
+        public void DeleteCategory(int id_category)
+        {
+            _repositoryCategory.DeleteCategory(id_category);
+        }
+
         [HttpPut]
+        [Route("/{id}")]
+        public void UpdateCategory([FromBody] Category category)
+        {
+            _repositoryCategory.UpdateCategory(category);
+        }
     }
 }
