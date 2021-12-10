@@ -6,6 +6,7 @@ using Microsoft.Identity.Web;
 using PFEBackend.Models;
 using PFEBackend.Repository;
 using Microsoft.OpenApi.Models;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,9 @@ builder.Services.AddControllers(
         var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser()
         .RequireRole("user", "administrator").RequireAssertion(handler => { return true; }).Build();
         options.Filters.Add(new AuthorizeFilter(policy));
+    }).AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

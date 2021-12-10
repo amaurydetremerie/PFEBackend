@@ -11,7 +11,6 @@ namespace PFEBackend.Controllers
     {
         private VinciMarketContext _context;
         private IConfiguration _configuration;
-        private HttpContext _httpContext;
 
         private static readonly string[] Summaries = new[]
         {
@@ -20,12 +19,11 @@ namespace PFEBackend.Controllers
 
         private readonly ILogger<WeatherForecastController> _logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, VinciMarketContext context, IConfiguration config, HttpContext httpContext)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, VinciMarketContext context, IConfiguration config)
         {
             _logger = logger;
             _context = context;
             _configuration = config;
-            _httpContext = httpContext;
         }
 
         [HttpGet]
@@ -76,9 +74,16 @@ namespace PFEBackend.Controllers
         
         [HttpGet("/me")]
         [AllowAnonymous]
-        public IEnumerable<Claim> GetMe()
+        public string GetMe()
         {
-            return _httpContext.User.Claims;
+            return User.FindFirst("preferred_username")?.Value + "    " + User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value;
+        }
+
+        [HttpGet("/claims")]
+        [AllowAnonymous]
+        public IEnumerable<Claim> GetClaims()
+        {
+            return User.Claims;
         }
     }
 }
