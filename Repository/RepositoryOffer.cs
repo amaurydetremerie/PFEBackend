@@ -81,5 +81,10 @@ namespace PFEBackend.Repository
         {
             throw new NotImplementedException();
         }
+
+        public void DeleteMyOffer(int id, string v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

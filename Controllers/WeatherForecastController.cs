@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PFEBackend.Models;
+using System.Security.Claims;
 
 namespace PFEBackend.Controllers
 {
@@ -10,6 +11,7 @@ namespace PFEBackend.Controllers
     {
         private VinciMarketContext _context;
         private IConfiguration _configuration;
+        private HttpContext _httpContext;
 
         private static readonly string[] Summaries = new[]
         {
@@ -18,11 +20,12 @@ namespace PFEBackend.Controllers
 
         private readonly ILogger<WeatherForecastController> _logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, VinciMarketContext context, IConfiguration config)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, VinciMarketContext context, IConfiguration config, HttpContext httpContext)
         {
             _logger = logger;
             _context = context;
             _configuration = config;
+            _httpContext = httpContext;
         }
 
         [HttpGet]
@@ -68,6 +71,14 @@ namespace PFEBackend.Controllers
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
             })
             .ToArray();
+        }
+
+        
+        [HttpGet("/me")]
+        [AllowAnonymous]
+        public IEnumerable<Claim> GetMe()
+        {
+            return _httpContext.User.Claims;
         }
     }
 }

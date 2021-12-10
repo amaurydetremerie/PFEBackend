@@ -6,19 +6,21 @@ using Microsoft.Identity.Web;
 
 namespace PFEBackend.Controllers
 {
+    //_httpContext.User.FindFirst("name").Value
+
     [ApiController]
     [AllowAnonymous]
     [Route("offers")]
     public class OfferController
     {
        private IRepositoryOffer _repositoryOffer;
-       private HttpContext _httpContext;
 
-        public OfferController(IRepositoryOffer repository, HttpContext httpContext)
+        public OfferController(IRepositoryOffer repository)
         {
             _repositoryOffer = repository;
-            _httpContext = httpContext;
         }
+
+        // Pour tout le monde
 
         [HttpGet]
         public IEnumerable<Offer> GetByPrice(Double? minPrice, Double? maxPrice)
@@ -34,20 +36,6 @@ namespace PFEBackend.Controllers
         }
 
         [HttpGet]
-        [Route("me/{id}")]
-        public Offer GetMyById(int id)
-        {
-            return _repositoryOffer.GetMyById(id, _httpContext.User.FindFirst("name").Value);
-        }
-
-        [HttpGet]
-        [Route("me")]
-        public IEnumerable<Offer> GetMy()
-        {
-            return _repositoryOffer.GetMy(_httpContext.User.FindFirst("name").Value);
-        }
-
-        [HttpGet]
         [Route("category/{id}")]
         public IEnumerable<Offer> GetByCategory(int id)
         {
@@ -57,21 +45,47 @@ namespace PFEBackend.Controllers
         [HttpPost]
         public void AddOffer(Offer offer)
         {
-            offer.Seller = _httpContext.User.FindFirst("name").Value;
+            offer.Seller = "";
             _repositoryOffer.AddOffer(offer);
         }
+
+
+        // Pour un user en particulier
+
+        [HttpGet]
+        [Route("me/{id}")]
+        public Offer GetMyById(int id)
+        {
+            return _repositoryOffer.GetMyById(id, "");
+        }
+
+        [HttpGet]
+        [Route("me")]
+        public IEnumerable<Offer> GetMy()
+        {
+            return _repositoryOffer.GetMy("");
+        }
+
+        [HttpPut]
+        public void UpdateOffer(Offer offer)
+        {
+            _repositoryOffer.UpdateOffer(offer, "");
+        }
+
+        [HttpDelete]
+        [Route("me/{id}")]
+        public void DeleteMyOffer(int id)
+        {
+            _repositoryOffer.DeleteMyOffer(id, "");
+        }
+
+        // Pour un admin
 
         [HttpDelete]
         [Route("{id}")]
         public void DeleteOffer(int id)
         {
             _repositoryOffer.DeleteOffer(id);
-        }
-
-        [HttpPut]
-        public void UpdateOffer(Offer offer)
-        {
-            _repositoryOffer.UpdateOffer(offer, _httpContext.User.FindFirst("name").Value);
         }
 
         /*Report*/
