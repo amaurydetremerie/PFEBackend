@@ -30,7 +30,7 @@ namespace PFEBackend.Models
 
         [Required]
         public int CategoryId { get; set; }
-        public virtual Category Parent { get; set; }
+        public virtual Category Category { get; set; }
     }
 
     public enum States
