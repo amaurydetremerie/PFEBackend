@@ -2,16 +2,14 @@
 using Microsoft.AspNetCore.Mvc;
 using PFEBackend.Models;
 using PFEBackend.Repository;
-using Microsoft.Identity.Web;
+using System.Security.Claims;
 
 namespace PFEBackend.Controllers
 {
-    //_httpContext.User.FindFirst("name").Value
-
     [ApiController]
     [AllowAnonymous]
     [Route("offers")]
-    public class OfferController
+    public class OfferController : ControllerBase
     {
        private IRepositoryOffer _repositoryOffer;
 
@@ -45,10 +43,10 @@ namespace PFEBackend.Controllers
         [HttpPost]
         public void AddOffer(Offer offer)
         {
-            offer.Seller = "";
+            offer.Seller = User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value;
+            offer.SellerEMail = User.FindFirst("preferred_username")?.Value;
             _repositoryOffer.AddOffer(offer);
         }
-
 
         // Pour un user en particulier
 
@@ -56,27 +54,29 @@ namespace PFEBackend.Controllers
         [Route("me/{id}")]
         public Offer GetMyById(int id)
         {
-            return _repositoryOffer.GetMyById(id, "");
+            return _repositoryOffer.GetMyById(id, User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value);
         }
 
         [HttpGet]
         [Route("me")]
         public IEnumerable<Offer> GetMy()
         {
-            return _repositoryOffer.GetMy("");
+            return _repositoryOffer.GetMy(User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value);
         }
 
         [HttpPut]
         public void UpdateOffer(Offer offer)
         {
-            _repositoryOffer.UpdateOffer(offer, "");
+            offer.Seller = User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value;
+            offer.SellerEMail = User.FindFirst("preferred_username")?.Value;
+            _repositoryOffer.UpdateOffer(offer, User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value);
         }
 
         [HttpDelete]
         [Route("me/{id}")]
         public void DeleteMyOffer(int id)
         {
-            _repositoryOffer.DeleteMyOffer(id, "");
+            _repositoryOffer.DeleteMyOffer(id, User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value);
         }
 
         // Pour un admin
@@ -88,7 +88,7 @@ namespace PFEBackend.Controllers
             _repositoryOffer.DeleteOffer(id);
         }
 
-        /*Report*/
+        // Report
         
         [HttpPost]
         [Route("report/{id}")]

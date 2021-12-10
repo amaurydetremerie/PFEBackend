@@ -28,6 +28,9 @@ namespace PFEBackend.Models
         [Required]
         public string Seller { get; set; }
 
+        [Required]
+        public string SellerEMail { get; set; }
+
         public int CountReport { get; set; }
 
         [Required]
