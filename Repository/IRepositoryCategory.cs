@@ -8,7 +8,7 @@ namespace PFEBackend.Repository
 
         Category GetById(int id);
 
-        IEnumerable<Category> GetByParent(int id);
+        IEnumerable<Category> GetChilds(int id);
 
         void UpdateCategory(Category category);
 

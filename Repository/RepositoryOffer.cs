@@ -20,7 +20,8 @@ namespace PFEBackend.Repository
         public void DeleteOffer(int id)
         {
             Offer offer = _context.Offers.Find(id);
-            _context.Offers.Remove(offer);
+            offer.Deleted = true;
+            _context.SaveChanges();
         }
 
         public IEnumerable<Offer> GetAll()
@@ -28,10 +29,10 @@ namespace PFEBackend.Repository
             return _context.Offers.ToArray();
         }
 
-        public IEnumerable<Offer> GetByCategory(int id_category)
+        public IEnumerable<Offer> GetByCategory(int id)
         {
             List<Category> listCategories = new List<Category>();
-            listCategories.Add(_context.Categories.Find(id_category));
+            listCategories.Add(_context.Categories.Find(id));
             listCategories.AddRange(listCategories.First().ChildCategories);
             List<Offer> listOffers = new List<Offer>();
             foreach (Category category in listCategories)
@@ -41,49 +42,44 @@ namespace PFEBackend.Repository
             return listOffers.DistinctBy(o => o.Id).ToArray();
         }
 
+        // TODO Exception si deleted ou states != Published
         public Offer GetById(int id)
         {
             return _context.Offers.Find(id);
         }
 
-        public IEnumerable<Offer> GetByPrice(double minPrice, double maxPrice)
+        public IEnumerable<Offer> GetByPrice(Double? minPrice, Double? maxPrice)
         {
-            IEnumerable<Offer> listOffre;
-            if (minPrice != -1.0 && maxPrice != -1.0)
-            {
-                listOffre = _context.Offers.Where(o => o.Price >= minPrice && o.Price <= maxPrice).ToArray();
-            }
-            else if (minPrice == -1.0 && maxPrice != -1.0)
-            {
-                listOffre = _context.Offers.Where(o => o.Price <= maxPrice).ToArray();
-            }
-            else if (minPrice != -1.0 && maxPrice == -1.0)
-            {
-                listOffre = _context.Offers.Where(o => o.Price >= minPrice).ToArray();
-            }
-            else
-            {
-                listOffre = GetAll();
-            }
-            return listOffre;
-        }
-
-        public void UpdateOffer(Offer offer)
-        {
-            _context.Offers.Update(offer);
-            _context.SaveChanges();
-
+            return _context.Offers.Where(o => o.Price >= (minPrice ?? Double.MinValue) && o.Price <= (maxPrice ?? Double.MaxValue) && o.Deleted == false && o.State == States.Published);
         }
 
         public void AddReportOffer(int id)
         {
             Offer offerReported = _context.Offers.Find(id);
-            offerReported.count_report =+ 1;
+            offerReported.CountReport += 1;
+            _context.SaveChanges();
         }
 
-        public void UpdateReportOffer(Offer offer)
+        public void UpdateReportOffer(int id)
         {
-            _context.Offers.Update(offer);
+            Offer offerReported = _context.Offers.Find(id);
+            offerReported.CountReport = 0;
+            _context.SaveChanges();
+        }
+
+        public Offer GetMyById(int id, string value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateOffer(Offer offer, string value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Offer> GetMy(string value)
+        {
+            throw new NotImplementedException();
         }
     }
 }

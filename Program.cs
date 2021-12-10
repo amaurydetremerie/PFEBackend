@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using PFEBackend.Models;
+using PFEBackend.Repository;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,15 +18,16 @@ builder.Services.AddControllers(
     options =>
     {
         var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser()
-        .RequireRole("user", "administrator")
-        .Build();
+        .RequireRole("user", "administrator").RequireAssertion(handler => { return true; }).Build();
         options.Filters.Add(new AuthorizeFilter(policy));
     });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "VinciMarket", Version = "v1" });
+});
 // Connection à la DB
 builder.Services.AddDbContext<VinciMarketContext>(options => options.UseSqlServer(
         builder.Configuration.GetConnectionString("DB"))
@@ -32,6 +35,10 @@ builder.Services.AddDbContext<VinciMarketContext>(options => options.UseSqlServe
 
 // Ajout de CORS (sinon erreur frontend)
 builder.Services.AddCors();
+
+// Ajout du bind d'interface des repository
+builder.Services.AddScoped<IRepositoryCategory, RepositoryCategory>();
+builder.Services.AddScoped<IRepositoryOffer, RepositoryOffer>();
 
 var app = builder.Build();
 

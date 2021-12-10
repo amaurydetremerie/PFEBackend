@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace PFEBackend.Models
 {
@@ -17,6 +18,8 @@ namespace PFEBackend.Models
 
         // Pour les propriétés de navigation
         public virtual Category? Parent { get; set; }
-        public ICollection<Category>? ChildCategories { get; set;}
+
+        //[InverseProperty("Parent")]
+        public virtual ICollection<Category>? ChildCategories { get; set;}
     }
 }
