@@ -33,9 +33,11 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "VinciMarket", Version = "v1" });
 });
 // Connection à la DB
-builder.Services.AddDbContext<VinciMarketContext>(options => options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DB"))
-        );
+builder.Services.AddDbContext<VinciMarketContext>(options => 
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DB")
+    )
+);
 
 // Ajout de CORS (sinon erreur frontend)
 builder.Services.AddCors();

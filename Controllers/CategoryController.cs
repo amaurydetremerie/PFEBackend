@@ -41,7 +41,7 @@ namespace PFEBackend.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public void AddCategory([FromBody] Category category)
+        public void AddCategory(Category category)
         {
             _repositoryCategory.AddCategory(category);
         }
@@ -56,7 +56,7 @@ namespace PFEBackend.Controllers
 
         [HttpPut]
         [AllowAnonymous]
-        public void UpdateCategory([FromBody] Category category)
+        public void UpdateCategory(Category category)
         {
             _repositoryCategory.UpdateCategory(category);
         }

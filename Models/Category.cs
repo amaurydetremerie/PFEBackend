@@ -19,7 +19,6 @@ namespace PFEBackend.Models
         // Pour les propriétés de navigation
         public virtual Category? Parent { get; set; }
 
-        //[InverseProperty("Parent")]
         public virtual ICollection<Category>? ChildCategories { get; set;}
     }
 }
