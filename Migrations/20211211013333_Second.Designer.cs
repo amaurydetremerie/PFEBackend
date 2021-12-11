@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PFEBackend.Models;
 
@@ -11,9 +12,10 @@ using PFEBackend.Models;
 namespace PFEBackend.Migrations
 {
     [DbContext(typeof(VinciMarketContext))]
-    partial class VinciMarketContextModelSnapshot : ModelSnapshot
+    [Migration("20211211013333_Second")]
+    partial class Second
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

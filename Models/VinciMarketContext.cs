@@ -51,19 +51,19 @@ namespace PFEBackend.Models
 
             modelBuilder.Entity<Offer>().HasData(
                 //Tondeuse, catégorie Jardin, Vente, Publiée, 100.01€, Woluwe
-                new Offer() { Id = 1, Title = "Tondeuse", Type = Types.Sale, CategoryId = 5, Description = "Tondeuse de luxe automatique", State = States.Published, Price = 100.01, Place = Places.Woluwe, Deleted = false, Seller = "vendeur@pfegrp5.onmicrosoft.com" },
+                new Offer() { Id = 1, Title = "Tondeuse", Type = Types.Sale, CategoryId = 5, Description = "Tondeuse de luxe automatique", State = States.Published, Price = 100.01, Place = Places.Woluwe, Deleted = false, SellerEMail = "vendeur@pfegrp5.onmicrosoft.com", Seller = "60038da5-5166-40c7-a6f8-8988e4c3cb9f" },
                 //TondeuseDeleted, catégorie Jardin, Vente, Supprimée, 100.01€, Woluwe
-                new Offer() { Id = 2, Title = "TondeuseDeleted", Type = Types.Sale, CategoryId = 5, Description = "Tondeuse de luxe automatique", State = States.Published, Price = 100.01, Place = Places.Woluwe, Deleted = true, Seller = "vendeur@pfegrp5.onmicrosoft.com" },
+                new Offer() { Id = 2, Title = "TondeuseDeleted", Type = Types.Sale, CategoryId = 5, Description = "Tondeuse de luxe automatique", State = States.Published, Price = 100.01, Place = Places.Woluwe, Deleted = true, SellerEMail = "vendeur@pfegrp5.onmicrosoft.com", Seller = "60038da5-5166-40c7-a6f8-8988e4c3cb9f" },
                 //TondeuseIxelles, catégorie Jardin, Vente, Publiée, 99.99€, Ixelles
-                new Offer() { Id = 3, Title = "TondeuseIxelles", Type = Types.Sale, CategoryId = 5, Description = "Tondeuse de luxe automatique", State = States.Published, Price = 99.99, Place = Places.Ixelles, Deleted = false, Seller = "vendeur@pfegrp5.onmicrosoft.com" },
+                new Offer() { Id = 3, Title = "TondeuseIxelles", Type = Types.Sale, CategoryId = 5, Description = "Tondeuse de luxe automatique", State = States.Published, Price = 99.99, Place = Places.Ixelles, Deleted = false, SellerEMail = "vendeur@pfegrp5.onmicrosoft.com", Seller = "60038da5-5166-40c7-a6f8-8988e4c3cb9f" },
                 //TondeuseCheveux, catégorie Electroménager, Vente, Publiée, 99.99€, Ixelles
-                new Offer() { Id = 4, Title = "TondeuseCheveux", Type = Types.Sale, CategoryId = 6, Description = "Tondeuse de luxe automatique", State = States.Published, Price = 99.99, Place = Places.Ixelles, Deleted = false, Seller = "vendeur@pfegrp5.onmicrosoft.com" },
+                new Offer() { Id = 4, Title = "TondeuseCheveux", Type = Types.Sale, CategoryId = 6, Description = "Tondeuse de luxe automatique", State = States.Published, Price = 99.99, Place = Places.Ixelles, Deleted = false, SellerEMail = "vendeur@pfegrp5.onmicrosoft.com", Seller = "60038da5-5166-40c7-a6f8-8988e4c3cb9f" },
                 //TondeuseIxelles, catégorie Electroménager, Vente, Publiée, 99.99€, Louvain
-                new Offer() { Id = 5, Title = "TondeuseCheveux", Type = Types.Sale, CategoryId = 6, Description = "Tondeuse de luxe automatique", State = States.Published, Price = 99.99, Place = Places.Louvain, Deleted = false, Seller = "vendeur@pfegrp5.onmicrosoft.com" },
+                new Offer() { Id = 5, Title = "TondeuseCheveux", Type = Types.Sale, CategoryId = 6, Description = "Tondeuse de luxe automatique", State = States.Published, Price = 99.99, Place = Places.Louvain, Deleted = false, SellerEMail = "vendeur@pfegrp5.onmicrosoft.com", Seller = "60038da5-5166-40c7-a6f8-8988e4c3cb9f" },
                 //TondeuseVendue, catégorie Jardin, Vente, Vendue, 99.99€, Ixelles
-                new Offer() { Id = 6, Title = "TondeuseVendue", Type = Types.Sale, CategoryId = 5, Description = "Tondeuse de luxe automatique", State = States.Sell, Price = 99.99, Place = Places.Ixelles, Deleted = false, Seller = "vendeur@pfegrp5.onmicrosoft.com" },
+                new Offer() { Id = 6, Title = "TondeuseVendue", Type = Types.Sale, CategoryId = 5, Description = "Tondeuse de luxe automatique", State = States.Sell, Price = 99.99, Place = Places.Ixelles, Deleted = false, SellerEMail = "vendeur@pfegrp5.onmicrosoft.com", Seller = "60038da5-5166-40c7-a6f8-8988e4c3cb9f" },
                 //TondeuseInvisible, catégorie Jardin, Vente, Vendue, 99.99€, Ixelles
-                new Offer() { Id = 7, Title = "TondeuseInvisible", Type = Types.Sale, CategoryId = 5, Description = "Tondeuse de luxe automatique", State = States.Invisible, Price = 99.99, Place = Places.Ixelles, Deleted = false, Seller = "vendeur@pfegrp5.onmicrosoft.com" }
+                new Offer() { Id = 7, Title = "TondeuseInvisible", Type = Types.Sale, CategoryId = 5, Description = "Tondeuse de luxe automatique", State = States.Invisible, Price = 99.99, Place = Places.Ixelles, Deleted = false, SellerEMail = "vendeur@pfegrp5.onmicrosoft.com", Seller = "60038da5-5166-40c7-a6f8-8988e4c3cb9f" }
             );
         }
 
