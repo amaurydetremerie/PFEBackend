@@ -17,7 +17,6 @@ namespace PFEBackend.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
         public IEnumerable<Category> GetAll()
         {
             return _repositoryCategory.GetAll();
@@ -25,7 +24,6 @@ namespace PFEBackend.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        [AllowAnonymous]
         public Category GetById(int id)
         {
             return _repositoryCategory.GetById(id);
@@ -33,29 +31,28 @@ namespace PFEBackend.Controllers
 
         [HttpGet]
         [Route("childs/{id}")]
-        [AllowAnonymous]
         public IEnumerable<Category> GetChilds(int id)
         {
             return _repositoryCategory.GetChilds(id);
         }
 
+        [Authorize(Roles = "administrator")]
         [HttpPost]
-        [AllowAnonymous]
         public void AddCategory(Category category)
         {
             _repositoryCategory.AddCategory(category);
         }
 
+        [Authorize(Roles = "administrator")]
         [HttpDelete]
         [Route("{id}")]
-        [AllowAnonymous]
         public void DeleteCategory(int id)
         {
             _repositoryCategory.DeleteCategory(id);
         }
 
+        [Authorize(Roles = "administrator")]
         [HttpPut]
-        [AllowAnonymous]
         public void UpdateCategory(Category category)
         {
             _repositoryCategory.UpdateCategory(category);
