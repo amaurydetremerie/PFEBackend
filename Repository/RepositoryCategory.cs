@@ -1,4 +1,7 @@
 ﻿using PFEBackend.Models;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PFEBackend.Repository
 {
@@ -56,8 +59,16 @@ namespace PFEBackend.Repository
 
         public void UpdateCategory(Category category)
         {
-            _context.Categories.Update(category);
-            _context.SaveChanges();
+            if (category.Id != category.ParentId)
+            {
+                IList l = new List<Category>(GetChilds(category.Id));
+                if(!GetChilds(category.Id).Any(c => c.Id == category.Id || c.Id == category.ParentId))
+                {
+                    _context.Categories.Update(category);
+                    _context.SaveChanges();
+                }
+            }
+            // ERREUR
         }
     }
 }
