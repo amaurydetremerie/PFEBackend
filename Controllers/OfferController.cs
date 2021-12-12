@@ -40,6 +40,13 @@ namespace PFEBackend.Controllers
             return _repositoryOffer.GetByCategory(id);
         }
 
+        [HttpGet]
+        [Route("count")]
+        public int CountOffer()
+        {
+            return _repositoryOffer.GetAll().Count();
+        }
+
         [HttpPost]
         public void AddOffer(Offer offer)
         {
