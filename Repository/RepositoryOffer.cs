@@ -13,6 +13,11 @@ namespace PFEBackend.Repository
 
         // Pour tout le monde
 
+        public int CountOffer()
+        {
+            return _context.Offers.Count();
+        }
+
         public void AddOffer(Offer offer)
         {
             _context.Add(offer);

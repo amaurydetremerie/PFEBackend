@@ -44,7 +44,7 @@ namespace PFEBackend.Controllers
         [Route("count")]
         public int CountOffer()
         {
-            return _repositoryOffer.GetAll().Count();
+            return _repositoryOffer.CountOffer();
         }
 
         [HttpPost]

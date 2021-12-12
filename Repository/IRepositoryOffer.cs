@@ -10,6 +10,8 @@ namespace PFEBackend.Repository
 
         Offer GetMyById(int id, string value);
 
+        int CountOffer();
+
         IEnumerable<Offer> GetByCategory(int id);
 
         IEnumerable<Offer> GetByPrice(Double? minPrice, Double? maxPrice);
