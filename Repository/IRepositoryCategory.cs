@@ -15,5 +15,7 @@ namespace PFEBackend.Repository
         void AddCategory(Category category);
 
         void DeleteCategory(int id);
+
+        IEnumerable<Category> GetParents();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace PFEBackend.Models
 {
@@ -9,9 +10,11 @@ namespace PFEBackend.Models
         public int Id { get; set; }
 
         [Required]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public Types Type { get; set; }
 
         [Required]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public States State { get; set; }
 
         public bool Deleted { get; set; }
@@ -21,6 +24,7 @@ namespace PFEBackend.Models
 
         public string? Description { get; set; }
 
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public Places Place { get; set; }
 
         public double Price { get; set; }
@@ -34,14 +38,15 @@ namespace PFEBackend.Models
         public int CountReport { get; set; }
 
         [Required]
+        [ForeignKey("Category")]
         public int CategoryId { get; set; }
-        public virtual Category Category { get; set; }
+        //public virtual Category Category { get; set; }
     }
 
     public enum States
     {
         Published,
-        Sell,
+        Sold,
         Invisible
     }
 

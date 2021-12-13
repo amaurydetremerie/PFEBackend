@@ -7,7 +7,6 @@ namespace PFEBackend.Controllers
 {
     [ApiController]
     [Route("categories")]
-    [AllowAnonymous]
     public class CategoryController : ControllerBase
     {
         private IRepositoryCategory _repositoryCategory;
@@ -37,14 +36,21 @@ namespace PFEBackend.Controllers
             return _repositoryCategory.GetChilds(id);
         }
 
-        //[Authorize(Roles = "administrator")]
+        [HttpGet]
+        [Route("parents")]
+        public IEnumerable<Category> GetParents()
+        {
+            return _repositoryCategory.GetParents();
+        }
+
+        [Authorize(Roles = "administrator")]
         [HttpPost]
         public void AddCategory(Category category)
         {
             _repositoryCategory.AddCategory(category);
         }
 
-        //[Authorize(Roles = "administrator")]
+        [Authorize(Roles = "administrator")]
         [HttpDelete]
         [Route("{id}")]
         public void DeleteCategory(int id)
@@ -52,7 +58,7 @@ namespace PFEBackend.Controllers
             _repositoryCategory.DeleteCategory(id);
         }
 
-        //[Authorize(Roles = "administrator")]
+        [Authorize(Roles = "administrator")]
         [HttpPut]
         public void UpdateCategory(Category category)
         {

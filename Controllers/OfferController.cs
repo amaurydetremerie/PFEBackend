@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PFEBackend.Models;
 using PFEBackend.Repository;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 
 namespace PFEBackend.Controllers
@@ -47,12 +48,20 @@ namespace PFEBackend.Controllers
             return _repositoryOffer.CountOffer();
         }
 
-        [HttpPost]
+        // Prendre un formdata en plus avec les medias
+        [HttpPost, DisableRequestSizeLimit]
         public void AddOffer(Offer offer)
         {
             offer.Seller = User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value;
             offer.SellerEMail = User.FindFirst("preferred_username")?.Value;
-            _repositoryOffer.AddOffer(offer);
+            _repositoryOffer.AddOffer(offer, Request.Form.Files);
+        }
+
+        [HttpPost, DisableRequestSizeLimit]
+        [Route("test")]
+        public HttpRequest AddOfferTest(Offer offer)
+        {
+            return Request;
         }
 
         // Pour un user en particulier

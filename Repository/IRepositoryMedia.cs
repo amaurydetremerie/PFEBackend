@@ -10,6 +10,8 @@ namespace PFEBackend.Repository
 
         IEnumerable<Media> GetByOffer(int id);
 
+        IEnumerable<Media> GetMyByOffer(int id, string seller);
+
         void AddMedia(Media media);
 
         void UpdateMedia(Media media);

@@ -7,6 +7,7 @@ using PFEBackend.Models;
 using PFEBackend.Repository;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
+using PFEBackend;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,7 @@ builder.Services.AddControllers(
         var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser()
         .RequireRole("user", "administrator").RequireAssertion(handler => { return true; }).Build();
         options.Filters.Add(new AuthorizeFilter(policy));
+        options.Filters.Add(new HttpResponseExceptionFilter());
     }).AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
@@ -56,6 +58,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseStaticFiles();
 
 app.UseAuthentication();
 app.UseAuthorization();

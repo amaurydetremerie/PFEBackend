@@ -18,7 +18,7 @@ namespace PFEBackend.Repository
 
         void UpdateOffer(Offer offer, string value);
 
-        void AddOffer(Offer offer);
+        void AddOffer(Offer offer, IFormFileCollection files);
 
         void DeleteOffer(int id);
 

@@ -30,6 +30,13 @@ namespace PFEBackend.Controllers
         }
 
         [HttpGet]
+        [Route("offer/me/{id}")]
+        public IEnumerable<Media> GetMyByOffer(int id)
+        {
+            return _repositoryMedia.GetMyByOffer(id, User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value);
+        }
+
+        [HttpGet]
         [Route("offer/{id}")]
         public IEnumerable<Media> GetByOffer(int id)
         {

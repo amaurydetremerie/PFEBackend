@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Web.Http;
 
 namespace PFEBackend.Repository
 {
@@ -9,23 +11,23 @@ namespace PFEBackend.Repository
     {
 
         private VinciMarketContext _context;
-        private readonly ILogger<RepositoryCategory> _logger;
 
-        public RepositoryCategory(VinciMarketContext context, ILogger<RepositoryCategory> logger)
+        public RepositoryCategory(VinciMarketContext context)
         {
             _context = context;
-            _logger = logger;
         }
 
         public void AddCategory(Category category)
         {
+            if (_context.Categories.Contains(category))
+                throw new RepositoryException(HttpStatusCode.Forbidden, "Cette catégorie existe déjà.");
             _context.Add(category);
             _context.SaveChanges();
         }
 
         public void DeleteCategory(int id)
         {
-            Category category = _context.Categories.Find(id);
+            Category category = _context.Categories.Find(id) ?? throw new RepositoryException(HttpStatusCode.NotFound, "Catégorie avec l'ID " + id + "n'existe pas.");
             DeleteChilds(category);
         }
 
@@ -47,14 +49,14 @@ namespace PFEBackend.Repository
 
         public Category GetById(int id)
         {
-            return _context.Categories.Where(c => c.Id == id).Select(c => new Category { Id = c.Id, Name = c.Name, ParentId = c.ParentId }).First();
+            return _context.Categories.Where(c => c.Id == id).Select(c => new Category { Id = c.Id, Name = c.Name, ParentId = c.ParentId }).First() ?? throw new RepositoryException(HttpStatusCode.NotFound, "Catégorie avec l'ID " + id + "n'existe pas."); ;
         }
 
         public IEnumerable<Category> GetChilds(int id)
         {
-            Category parent = _context.Categories.Find(id) ?? new Category();
+            Category parent = _context.Categories.Find(id) ?? throw new RepositoryException(HttpStatusCode.NotFound, "Catégorie avec l'ID " + id + "n'existe pas.");
             _context.Entry(parent).Collection(c => c.ChildCategories).Load();
-            return parent.ChildCategories;
+            return parent.ChildCategories.Select(c => new Category { Id = c.Id, Name = c.Name, ParentId = c.ParentId }) ?? Enumerable.Empty<Category>();
         }
 
         public void UpdateCategory(Category category)
@@ -64,11 +66,19 @@ namespace PFEBackend.Repository
                 IList l = new List<Category>(GetChilds(category.Id));
                 if(!GetChilds(category.Id).Any(c => c.Id == category.Id || c.Id == category.ParentId))
                 {
-                    _context.Categories.Update(category);
+                    Category old = _context.Categories.Find(category.Id) ?? throw new RepositoryException(HttpStatusCode.NotFound, "Catégorie avec l'ID " + category.Id + "n'existe pas.");
+                    _context.Entry(old).CurrentValues.SetValues(category);
                     _context.SaveChanges();
+                    return;
                 }
+                throw new RepositoryException(HttpStatusCode.Forbidden, "Boucle parent/enfant détectée.");
             }
-            // ERREUR
+            throw new RepositoryException(HttpStatusCode.Forbidden, "Une catégorie ne peut pas être son parent.");
+        }
+
+        public IEnumerable<Category> GetParents()
+        {
+            return _context.Categories.Where(c => c.ParentId == null).Select(c => new Category { Id = c.Id, Name = c.Name, ParentId = c.ParentId, ChildCategories = c.ChildCategories }).ToList();
         }
     }
 }
