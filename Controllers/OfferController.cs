@@ -12,11 +12,13 @@ namespace PFEBackend.Controllers
     [Route("offers")]
     public class OfferController : ControllerBase
     {
-       private IRepositoryOffer _repositoryOffer;
+        private IRepositoryOffer _repositoryOffer;
+        private ILogger<OfferController> _logger;
 
-        public OfferController(IRepositoryOffer repository)
+        public OfferController(IRepositoryOffer repository, ILogger<OfferController> logger)
         {
             _repositoryOffer = repository;
+            _logger = logger;
         }
 
         // Pour tout le monde
@@ -59,9 +61,19 @@ namespace PFEBackend.Controllers
 
         [HttpPost, DisableRequestSizeLimit]
         [Route("test")]
-        public HttpRequest AddOfferTest(Offer offer)
+        public void AddOfferTest(Offer offer)
         {
-            return Request;
+            _logger.LogInformation("***************************************************************************************************");
+            _logger.LogInformation("***************************************************************************************************");
+            _logger.LogInformation("***************************************************************************************************");
+            _logger.LogInformation("***************************************************************************************************");
+            _logger.LogInformation("***************************************************************************************************");
+            _logger.LogInformation(Request.Form.ToString());
+            _logger.LogInformation("***************************************************************************************************");
+            _logger.LogInformation("***************************************************************************************************");
+            _logger.LogInformation("***************************************************************************************************");
+            _logger.LogInformation("***************************************************************************************************");
+            _logger.LogInformation("***************************************************************************************************");
         }
 
         // Pour un user en particulier
