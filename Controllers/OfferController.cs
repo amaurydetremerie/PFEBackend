@@ -8,7 +8,6 @@ using System.Security.Claims;
 namespace PFEBackend.Controllers
 {
     [ApiController]
-    [AllowAnonymous]
     [Route("offers")]
     public class OfferController : ControllerBase
     {
@@ -92,6 +91,7 @@ namespace PFEBackend.Controllers
 
         // Pour un admin
 
+        [Authorize(Roles = "administrator")]
         [HttpDelete]
         [Route("{id}")]
         public void DeleteOffer(int id)
@@ -108,6 +108,7 @@ namespace PFEBackend.Controllers
             _repositoryOffer.AddReportOffer(id);
         }
 
+        [Authorize(Roles = "administrator")]
         [HttpPut]
         [Route("report/{id}")]
         public void UpdateReportOffer(int id)

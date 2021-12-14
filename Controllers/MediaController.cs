@@ -7,7 +7,6 @@ namespace PFEBackend.Controllers
 {
     [ApiController]
     [Route("medias")]
-    [AllowAnonymous]
     public class MediaController : ControllerBase
     {
         private IRepositoryMedia _repositoryMedia;
@@ -47,15 +46,23 @@ namespace PFEBackend.Controllers
         [HttpPost]
         public void AddMedia(Media media)
         {
-            _repositoryMedia.AddMedia(media);
+            _repositoryMedia.AddMedia(media, User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value);
         }
 
         [HttpPut]
         public void UpdateMedia(Media media)
         {
-            _repositoryMedia.UpdateMedia(media);
+            _repositoryMedia.UpdateMedia(media, User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value);
         }
 
+        [HttpDelete]
+        [Route("me/{id}")]
+        public void DeleteMyMedia(int id)
+        {
+            _repositoryMedia.DeleteMyMedia(id, User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value);
+        }
+
+        [Authorize(Roles = "administrator")]
         [HttpDelete]
         [Route("{id}")]
         public void DeleteMedia(int id)

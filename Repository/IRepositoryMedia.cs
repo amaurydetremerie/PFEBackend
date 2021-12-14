@@ -12,10 +12,11 @@ namespace PFEBackend.Repository
 
         IEnumerable<Media> GetMyByOffer(int id, string seller);
 
-        void AddMedia(Media media);
+        void AddMedia(Media media, string seller);
 
-        void UpdateMedia(Media media);
+        void UpdateMedia(Media media, string seller);
 
+        void DeleteMyMedia(int id, string seller);
         void DeleteMedia(int id);
     }
 }

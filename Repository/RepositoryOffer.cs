@@ -65,27 +65,24 @@ namespace PFEBackend.Repository
 
         public Offer GetMyById(int id, string seller)
         {
-            return _context.Offers.Where((o) => o.Id == id && o.Seller == seller).First() ?? throw new RepositoryException(HttpStatusCode.NotFound, "L'annonce n'existe pas ou n'est pas la votre");
+            return _context.Offers.Where((o) => o.Id == id && o.Seller == seller && o.Deleted == false).FirstOrDefault() ?? throw new RepositoryException(HttpStatusCode.NotFound, "L'annonce n'existe pas ou n'est pas la votre");
         }
 
         public void UpdateOffer(Offer offer, string seller)
         {
-            if (_context.Offers.Where((o) => o.Id == offer.Id && o.Seller == seller).First() == null)
-                 throw new RepositoryException(HttpStatusCode.NotFound, "L'annonce n'existe pas ou n'est pas la votre");
-            _context.Update(offer);
+            Offer old = _context.Offers.Where((o) => o.Id == offer.Id && o.Seller == seller && o.Deleted == false).FirstOrDefault() ?? throw new RepositoryException(HttpStatusCode.NotFound, "Offre avec l'ID " + offer.Id + "n'existe pas ou n'est pas la votre.");
+            _context.Entry(old).CurrentValues.SetValues(offer);
             _context.SaveChanges();
         }
 
         public IEnumerable<Offer> GetMy(string seller)
         {
-            return _context.Offers.Where(o => o.Seller == seller && o.Deleted == false).ToList();
+            return _context.Offers.Where(o => o.Seller == seller && o.Deleted == false);
         }
 
         public void DeleteMyOffer(int id, string seller)
         {
-            Offer offer = _context.Offers.Where((o) => o.Id == id && o.Seller == seller).First();
-            if (offer == null)
-                throw new RepositoryException(HttpStatusCode.NotFound, "L'annonce n'existe pas ou n'est pas la votre");
+            Offer offer = _context.Offers.Where((o) => o.Id == id && o.Seller == seller && o.Deleted == false).FirstOrDefault() ?? throw new RepositoryException(HttpStatusCode.NotFound, "L'annonce n'existe pas ou n'est pas la votre");
             offer.Deleted = true;
             _context.SaveChanges();
         }
@@ -94,7 +91,7 @@ namespace PFEBackend.Repository
 
         public void DeleteOffer(int id)
         {
-            Offer offer = _context.Offers.Find(id) ?? throw new RepositoryException(HttpStatusCode.NotFound, "Annonce avec l'ID " + id + "n'existe pas.");
+            Offer offer = _context.Offers.Where(o => o.Id == id && o.Deleted == false).FirstOrDefault() ?? throw new RepositoryException(HttpStatusCode.NotFound, "Annonce avec l'ID " + id + "n'existe pas.");
             offer.Deleted = true;
             _context.SaveChanges();
         }
@@ -102,14 +99,14 @@ namespace PFEBackend.Repository
         // Report
         public void AddReportOffer(int id)
         {
-            Offer offerReported = _context.Offers.Find(id) ?? throw new RepositoryException(HttpStatusCode.NotFound, "Annonce avec l'ID " + id + "n'existe pas.");
+            Offer offerReported = _context.Offers.Where(o => o.Id == id && o.Deleted == false && o.State == States.Published).FirstOrDefault() ?? throw new RepositoryException(HttpStatusCode.NotFound, "Annonce avec l'ID " + id + "n'existe pas.");
             offerReported.CountReport += 1;
             _context.SaveChanges();
         }
 
         public void UpdateReportOffer(int id)
         {
-            Offer offerReported = _context.Offers.Find(id) ?? throw new RepositoryException(HttpStatusCode.NotFound, "Annonce avec l'ID " + id + "n'existe pas.");
+            Offer offerReported = _context.Offers.Where(o => o.Id == id && o.Deleted == false).FirstOrDefault() ?? throw new RepositoryException(HttpStatusCode.NotFound, "Annonce avec l'ID " + id + "n'existe pas.");
             offerReported.CountReport = 0;
             _context.SaveChanges();
         }
