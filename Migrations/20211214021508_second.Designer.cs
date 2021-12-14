@@ -12,8 +12,8 @@ using PFEBackend.Models;
 namespace PFEBackend.Migrations
 {
     [DbContext(typeof(VinciMarketContext))]
-    [Migration("20211211013333_Second")]
-    partial class Second
+    [Migration("20211214021508_second")]
+    partial class second
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -265,11 +265,9 @@ namespace PFEBackend.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("Seller")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SellerEMail")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("State")
@@ -283,8 +281,6 @@ namespace PFEBackend.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
 
                     b.ToTable("Offers");
 
@@ -414,17 +410,6 @@ namespace PFEBackend.Migrations
                         .IsRequired();
 
                     b.Navigation("Offer");
-                });
-
-            modelBuilder.Entity("PFEBackend.Models.Offer", b =>
-                {
-                    b.HasOne("PFEBackend.Models.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("PFEBackend.Models.Category", b =>

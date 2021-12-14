@@ -4,16 +4,31 @@
 
 namespace PFEBackend.Migrations
 {
-    public partial class Second : Migration
+    public partial class second : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Offers_Categories_CategoryId",
+                table: "Offers");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Offers_CategoryId",
+                table: "Offers");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Seller",
+                table: "Offers",
+                type: "nvarchar(max)",
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(max)");
+
             migrationBuilder.AddColumn<string>(
                 name: "SellerEMail",
                 table: "Offers",
                 type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "");
+                nullable: true);
 
             migrationBuilder.UpdateData(
                 table: "Offers",
@@ -71,6 +86,16 @@ namespace PFEBackend.Migrations
                 name: "SellerEMail",
                 table: "Offers");
 
+            migrationBuilder.AlterColumn<string>(
+                name: "Seller",
+                table: "Offers",
+                type: "nvarchar(max)",
+                nullable: false,
+                defaultValue: "",
+                oldClrType: typeof(string),
+                oldType: "nvarchar(max)",
+                oldNullable: true);
+
             migrationBuilder.UpdateData(
                 table: "Offers",
                 keyColumn: "Id",
@@ -119,6 +144,19 @@ namespace PFEBackend.Migrations
                 keyValue: 7,
                 column: "Seller",
                 value: "vendeur@pfegrp5.onmicrosoft.com");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Offers_CategoryId",
+                table: "Offers",
+                column: "CategoryId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Offers_Categories_CategoryId",
+                table: "Offers",
+                column: "CategoryId",
+                principalTable: "Categories",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
         }
     }
 }
