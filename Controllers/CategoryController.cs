@@ -5,6 +5,7 @@ using PFEBackend.Repository;
 
 namespace PFEBackend.Controllers
 {
+    [AllowAnonymous]
     [ApiController]
     [Route("categories")]
     public class CategoryController : ControllerBase

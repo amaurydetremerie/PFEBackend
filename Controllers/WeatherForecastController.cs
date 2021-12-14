@@ -5,6 +5,7 @@ using System.Security.Claims;
 
 namespace PFEBackend.Controllers
 {
+    [AllowAnonymous]
     [ApiController]
     [Route("WeatherForecast")]
     public class WeatherForecastController : ControllerBase

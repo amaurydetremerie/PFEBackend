@@ -7,6 +7,7 @@ using System.Security.Claims;
 
 namespace PFEBackend.Controllers
 {
+    [AllowAnonymous]
     [ApiController]
     [Route("offers")]
     public class OfferController : ControllerBase
