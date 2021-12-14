@@ -53,7 +53,7 @@ namespace PFEBackend.Controllers
         [HttpPost, DisableRequestSizeLimit]
         public void AddOffer([FromForm] string offerJson, [FromForm] IFormFileCollection files)
         {
-            Offer offer = Newtonsoft.Json.JsonConvert.DeserializeObject<Offer>(offerJson)
+            Offer offer = Newtonsoft.Json.JsonConvert.DeserializeObject<Offer>(offerJson);
             offer.Seller = User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value;
             offer.SellerEMail = User.FindFirst("preferred_username")?.Value;
             _repositoryOffer.AddOffer(offer, files);
