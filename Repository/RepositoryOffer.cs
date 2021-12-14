@@ -14,7 +14,7 @@ namespace PFEBackend.Repository
             _logger = logger;
         }
 
-        // Pour tout le monde
+        // For everyone
 
         public int CountOffer()
         {
@@ -61,7 +61,7 @@ namespace PFEBackend.Repository
             return _context.Offers.Where(o => o.Price >= (minPrice ?? Double.MinValue) && o.Price <= (maxPrice ?? Double.MaxValue) && o.Deleted == false && o.State == States.Published);
         }
 
-        // Pour un user en particulier
+        // For a user in particular
 
         public Offer GetMyById(int id, string seller)
         {
@@ -87,7 +87,7 @@ namespace PFEBackend.Repository
             _context.SaveChanges();
         }
 
-        // Pour un admin
+        // For a admin
 
         public void DeleteOffer(int id)
         {
