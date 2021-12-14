@@ -12,8 +12,6 @@ using Microsoft.AspNetCore.HttpLogging;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.Configure<IISServerOptions>(options => options.AllowSynchronousIO = true);
-
 builder.Services.AddHttpLogging(options =>
 {
     options.LoggingFields = HttpLoggingFields.RequestPropertiesAndHeaders |
@@ -53,6 +51,7 @@ builder.Services.AddCors();
 // Ajout du bind d'interface des repository
 builder.Services.AddScoped<IRepositoryCategory, RepositoryCategory>();
 builder.Services.AddScoped<IRepositoryOffer, RepositoryOffer>();
+builder.Services.AddScoped<IRepositoryMedia, RepositoryMedia>();
 
 var app = builder.Build();
 

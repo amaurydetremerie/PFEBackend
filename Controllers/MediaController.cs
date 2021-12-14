@@ -7,6 +7,7 @@ namespace PFEBackend.Controllers
 {
     [ApiController]
     [Route("medias")]
+    [AllowAnonymous]
     public class MediaController : ControllerBase
     {
         private IRepositoryMedia _repositoryMedia;

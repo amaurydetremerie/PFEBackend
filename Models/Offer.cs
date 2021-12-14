@@ -29,11 +29,9 @@ namespace PFEBackend.Models
 
         public double Price { get; set; }
 
-        [Required]
-        public string Seller { get; set; }
+        public string? Seller { get; set; }
 
-        [Required]
-        public string SellerEMail { get; set; }
+        public string? SellerEMail { get; set; }
 
         public int CountReport { get; set; }
 

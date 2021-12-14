@@ -6,10 +6,12 @@ namespace PFEBackend.Repository
     public class RepositoryOffer : IRepositoryOffer
     {
         private VinciMarketContext _context;
+        private ILogger<RepositoryOffer> _logger;
 
-        public RepositoryOffer(VinciMarketContext context)
+        public RepositoryOffer(VinciMarketContext context, ILogger<RepositoryOffer> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // Pour tout le monde
@@ -118,8 +120,6 @@ namespace PFEBackend.Repository
                 throw new RepositoryException(HttpStatusCode.Forbidden, "Cette annonce existe déjà.");
             offer = _context.Add(offer).Entity ;
 
-            string? folderName = Path.Combine("StaticFiles", "Images");
-
             if (files.Any(f => f.Length == 0))
             {
                 throw new RepositoryException(HttpStatusCode.Forbidden, "Un fichier est vide.");
@@ -127,12 +127,12 @@ namespace PFEBackend.Repository
 
             foreach (IFormFile? file in files)
             {
-                string? fullPath = Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), folderName), file.FileName);
+                string? fullPath = Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), "StaticFiles"), file.FileName);
 
                 Media media = new();
 
-                media.Path = Path.Combine(folderName, file.FileName);
-                media.OfferId = offer.Id;
+                media.Path = Path.Combine("StaticFiles", file.FileName);
+                media.Offer = offer;
 
                 _context.Media.Add(media);
 

@@ -26,14 +26,14 @@ namespace PFEBackend
                     StatusCode = (int)exceptionHTTP.Response.StatusCode,
                 };
                 context.ExceptionHandled = true;
-            } /*else if (context.Exception is Exception exceptionErreur)
+            } else if (context.Exception is Exception exceptionErreur)
             {
-                context.Result = new ObjectResult("An error as occured")
+                context.Result = new ObjectResult(exceptionErreur.Message)
                 {
                     StatusCode = (int)StatusCodes.Status500InternalServerError,
                 };
                 context.ExceptionHandled = true;
-            }*/
+            }
         }
     }
 }
