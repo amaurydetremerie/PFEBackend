@@ -8,8 +8,17 @@ using PFEBackend.Repository;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 using PFEBackend;
+using Microsoft.AspNetCore.HttpLogging;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.Configure<IISServerOptions>(options => options.AllowSynchronousIO = true);
+
+builder.Services.AddHttpLogging(options =>
+{
+    options.LoggingFields = HttpLoggingFields.RequestPropertiesAndHeaders |
+                            HttpLoggingFields.RequestBody;
+});
 
 // Add AzureAD authentication with a Bearer Token
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -46,6 +55,8 @@ builder.Services.AddScoped<IRepositoryCategory, RepositoryCategory>();
 builder.Services.AddScoped<IRepositoryOffer, RepositoryOffer>();
 
 var app = builder.Build();
+
+app.UseHttpLogging();
 
 // Configuration des CORS
 app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
