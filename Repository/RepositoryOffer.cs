@@ -141,5 +141,10 @@ namespace PFEBackend.Repository
 
             _context.SaveChanges();
         }
+
+        public IEnumerable<Offer> GetReportOffer()
+        {
+            return _context.Offers.Where(o => o.CountReport > 0 && o.Deleted == false);
+        }
     }
 }

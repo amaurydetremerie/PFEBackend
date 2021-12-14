@@ -117,5 +117,12 @@ namespace PFEBackend.Controllers
             _repositoryOffer.UpdateReportOffer(id);
         }
 
+        [Authorize(Roles = "administrator")]
+        [HttpGet]
+        [Route("report")]
+        public IEnumerable<Offer> GetReportOffer()
+        {
+            return _repositoryOffer.GetReportOffer();
+        }
     }
 }

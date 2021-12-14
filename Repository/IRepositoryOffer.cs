@@ -30,5 +30,6 @@ namespace PFEBackend.Repository
 
         void DeleteMyOffer(int id, string v);
 
+        IEnumerable<Offer> GetReportOffer();
     }
 }
