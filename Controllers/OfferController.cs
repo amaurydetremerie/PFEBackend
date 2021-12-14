@@ -52,22 +52,11 @@ namespace PFEBackend.Controllers
 
         // Prendre un formdata en plus avec les medias
         [HttpPost, DisableRequestSizeLimit]
-        public void AddOffer(Offer offer)
+        public void AddOffer([FromForm] Offer offer, [FromForm] IFormFileCollection files)
         {
             offer.Seller = User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value;
             offer.SellerEMail = User.FindFirst("preferred_username")?.Value;
-            _repositoryOffer.AddOffer(offer, Request.Form.Files);
-        }
-
-        [HttpPost, DisableRequestSizeLimit]
-        [Route("test")]
-        public void AddOfferTest()
-        {
-            using (StreamReader reader = new StreamReader(Request.Body))
-            {
-                string text = reader.ReadToEnd();
-                _logger.LogInformation("******************************************************************************\n" + text);
-            }
+            _repositoryOffer.AddOffer(offer, files);
         }
 
         // Pour un user en particulier
