@@ -51,8 +51,9 @@ namespace PFEBackend.Controllers
 
         // Prendre un formdata en plus avec les medias
         [HttpPost, DisableRequestSizeLimit]
-        public void AddOffer(Offer offer, [FromForm] IFormFileCollection files)
+        public void AddOffer([FromForm] string offerJson, [FromForm] IFormFileCollection files)
         {
+            Offer offer = Newtonsoft.Json.JsonConvert.DeserializeObject<Offer>(offerJson)
             offer.Seller = User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value;
             offer.SellerEMail = User.FindFirst("preferred_username")?.Value;
             _repositoryOffer.AddOffer(offer, files);
