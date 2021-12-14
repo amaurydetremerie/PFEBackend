@@ -12,8 +12,8 @@ using PFEBackend.Models;
 namespace PFEBackend.Migrations
 {
     [DbContext(typeof(VinciMarketContext))]
-    [Migration("20211209000701_Initial")]
-    partial class Initial
+    [Migration("20211214021508_second")]
+    partial class second
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -249,6 +249,9 @@ namespace PFEBackend.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
+                    b.Property<int>("CountReport")
+                        .HasColumnType("int");
+
                     b.Property<bool>("Deleted")
                         .HasColumnType("bit");
 
@@ -262,7 +265,9 @@ namespace PFEBackend.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("Seller")
-                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SellerEMail")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("State")
@@ -277,9 +282,114 @@ namespace PFEBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
-
                     b.ToTable("Offers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoryId = 5,
+                            CountReport = 0,
+                            Deleted = false,
+                            Description = "Tondeuse de luxe automatique",
+                            Place = 0,
+                            Price = 100.01000000000001,
+                            Seller = "60038da5-5166-40c7-a6f8-8988e4c3cb9f",
+                            SellerEMail = "vendeur@pfegrp5.onmicrosoft.com",
+                            State = 0,
+                            Title = "Tondeuse",
+                            Type = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoryId = 5,
+                            CountReport = 0,
+                            Deleted = true,
+                            Description = "Tondeuse de luxe automatique",
+                            Place = 0,
+                            Price = 100.01000000000001,
+                            Seller = "60038da5-5166-40c7-a6f8-8988e4c3cb9f",
+                            SellerEMail = "vendeur@pfegrp5.onmicrosoft.com",
+                            State = 0,
+                            Title = "TondeuseDeleted",
+                            Type = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CategoryId = 5,
+                            CountReport = 0,
+                            Deleted = false,
+                            Description = "Tondeuse de luxe automatique",
+                            Place = 1,
+                            Price = 99.989999999999995,
+                            Seller = "60038da5-5166-40c7-a6f8-8988e4c3cb9f",
+                            SellerEMail = "vendeur@pfegrp5.onmicrosoft.com",
+                            State = 0,
+                            Title = "TondeuseIxelles",
+                            Type = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CategoryId = 6,
+                            CountReport = 0,
+                            Deleted = false,
+                            Description = "Tondeuse de luxe automatique",
+                            Place = 1,
+                            Price = 99.989999999999995,
+                            Seller = "60038da5-5166-40c7-a6f8-8988e4c3cb9f",
+                            SellerEMail = "vendeur@pfegrp5.onmicrosoft.com",
+                            State = 0,
+                            Title = "TondeuseCheveux",
+                            Type = 1
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CategoryId = 6,
+                            CountReport = 0,
+                            Deleted = false,
+                            Description = "Tondeuse de luxe automatique",
+                            Place = 2,
+                            Price = 99.989999999999995,
+                            Seller = "60038da5-5166-40c7-a6f8-8988e4c3cb9f",
+                            SellerEMail = "vendeur@pfegrp5.onmicrosoft.com",
+                            State = 0,
+                            Title = "TondeuseCheveux",
+                            Type = 1
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CategoryId = 5,
+                            CountReport = 0,
+                            Deleted = false,
+                            Description = "Tondeuse de luxe automatique",
+                            Place = 1,
+                            Price = 99.989999999999995,
+                            Seller = "60038da5-5166-40c7-a6f8-8988e4c3cb9f",
+                            SellerEMail = "vendeur@pfegrp5.onmicrosoft.com",
+                            State = 1,
+                            Title = "TondeuseVendue",
+                            Type = 1
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CategoryId = 5,
+                            CountReport = 0,
+                            Deleted = false,
+                            Description = "Tondeuse de luxe automatique",
+                            Place = 1,
+                            Price = 99.989999999999995,
+                            Seller = "60038da5-5166-40c7-a6f8-8988e4c3cb9f",
+                            SellerEMail = "vendeur@pfegrp5.onmicrosoft.com",
+                            State = 2,
+                            Title = "TondeuseInvisible",
+                            Type = 1
+                        });
                 });
 
             modelBuilder.Entity("PFEBackend.Models.Category", b =>
@@ -300,17 +410,6 @@ namespace PFEBackend.Migrations
                         .IsRequired();
 
                     b.Navigation("Offer");
-                });
-
-            modelBuilder.Entity("PFEBackend.Models.Offer", b =>
-                {
-                    b.HasOne("PFEBackend.Models.Category", "Parent")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Parent");
                 });
 
             modelBuilder.Entity("PFEBackend.Models.Category", b =>

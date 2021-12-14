@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PFEBackend.Models;
 
@@ -11,9 +12,10 @@ using PFEBackend.Models;
 namespace PFEBackend.Migrations
 {
     [DbContext(typeof(VinciMarketContext))]
-    partial class VinciMarketContextModelSnapshot : ModelSnapshot
+    [Migration("20211210162902_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -263,9 +265,7 @@ namespace PFEBackend.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("Seller")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SellerEMail")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("State")
@@ -280,6 +280,8 @@ namespace PFEBackend.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Offers");
 
                     b.HasData(
@@ -292,8 +294,7 @@ namespace PFEBackend.Migrations
                             Description = "Tondeuse de luxe automatique",
                             Place = 0,
                             Price = 100.01000000000001,
-                            Seller = "60038da5-5166-40c7-a6f8-8988e4c3cb9f",
-                            SellerEMail = "vendeur@pfegrp5.onmicrosoft.com",
+                            Seller = "vendeur@pfegrp5.onmicrosoft.com",
                             State = 0,
                             Title = "Tondeuse",
                             Type = 1
@@ -307,8 +308,7 @@ namespace PFEBackend.Migrations
                             Description = "Tondeuse de luxe automatique",
                             Place = 0,
                             Price = 100.01000000000001,
-                            Seller = "60038da5-5166-40c7-a6f8-8988e4c3cb9f",
-                            SellerEMail = "vendeur@pfegrp5.onmicrosoft.com",
+                            Seller = "vendeur@pfegrp5.onmicrosoft.com",
                             State = 0,
                             Title = "TondeuseDeleted",
                             Type = 1
@@ -322,8 +322,7 @@ namespace PFEBackend.Migrations
                             Description = "Tondeuse de luxe automatique",
                             Place = 1,
                             Price = 99.989999999999995,
-                            Seller = "60038da5-5166-40c7-a6f8-8988e4c3cb9f",
-                            SellerEMail = "vendeur@pfegrp5.onmicrosoft.com",
+                            Seller = "vendeur@pfegrp5.onmicrosoft.com",
                             State = 0,
                             Title = "TondeuseIxelles",
                             Type = 1
@@ -337,8 +336,7 @@ namespace PFEBackend.Migrations
                             Description = "Tondeuse de luxe automatique",
                             Place = 1,
                             Price = 99.989999999999995,
-                            Seller = "60038da5-5166-40c7-a6f8-8988e4c3cb9f",
-                            SellerEMail = "vendeur@pfegrp5.onmicrosoft.com",
+                            Seller = "vendeur@pfegrp5.onmicrosoft.com",
                             State = 0,
                             Title = "TondeuseCheveux",
                             Type = 1
@@ -352,8 +350,7 @@ namespace PFEBackend.Migrations
                             Description = "Tondeuse de luxe automatique",
                             Place = 2,
                             Price = 99.989999999999995,
-                            Seller = "60038da5-5166-40c7-a6f8-8988e4c3cb9f",
-                            SellerEMail = "vendeur@pfegrp5.onmicrosoft.com",
+                            Seller = "vendeur@pfegrp5.onmicrosoft.com",
                             State = 0,
                             Title = "TondeuseCheveux",
                             Type = 1
@@ -367,8 +364,7 @@ namespace PFEBackend.Migrations
                             Description = "Tondeuse de luxe automatique",
                             Place = 1,
                             Price = 99.989999999999995,
-                            Seller = "60038da5-5166-40c7-a6f8-8988e4c3cb9f",
-                            SellerEMail = "vendeur@pfegrp5.onmicrosoft.com",
+                            Seller = "vendeur@pfegrp5.onmicrosoft.com",
                             State = 1,
                             Title = "TondeuseVendue",
                             Type = 1
@@ -382,8 +378,7 @@ namespace PFEBackend.Migrations
                             Description = "Tondeuse de luxe automatique",
                             Place = 1,
                             Price = 99.989999999999995,
-                            Seller = "60038da5-5166-40c7-a6f8-8988e4c3cb9f",
-                            SellerEMail = "vendeur@pfegrp5.onmicrosoft.com",
+                            Seller = "vendeur@pfegrp5.onmicrosoft.com",
                             State = 2,
                             Title = "TondeuseInvisible",
                             Type = 1
@@ -408,6 +403,17 @@ namespace PFEBackend.Migrations
                         .IsRequired();
 
                     b.Navigation("Offer");
+                });
+
+            modelBuilder.Entity("PFEBackend.Models.Offer", b =>
+                {
+                    b.HasOne("PFEBackend.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("PFEBackend.Models.Category", b =>

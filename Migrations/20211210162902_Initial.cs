@@ -24,7 +24,8 @@ namespace PFEBackend.Migrations
                         name: "FK_Categories_Categories_ParentId",
                         column: x => x.ParentId,
                         principalTable: "Categories",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -41,6 +42,7 @@ namespace PFEBackend.Migrations
                     Place = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
                     Seller = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CountReport = table.Column<int>(type: "int", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -115,6 +117,20 @@ namespace PFEBackend.Migrations
                     { 25, "Antiquité et objets de collection", 17 },
                     { 27, "Electronique et ordinateurs", 26 },
                     { 28, "Téléphones mobiles", 26 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Offers",
+                columns: new[] { "Id", "CategoryId", "CountReport", "Deleted", "Description", "Place", "Price", "Seller", "State", "Title", "Type" },
+                values: new object[,]
+                {
+                    { 1, 5, 0, false, "Tondeuse de luxe automatique", 0, 100.01000000000001, "vendeur@pfegrp5.onmicrosoft.com", 0, "Tondeuse", 1 },
+                    { 2, 5, 0, true, "Tondeuse de luxe automatique", 0, 100.01000000000001, "vendeur@pfegrp5.onmicrosoft.com", 0, "TondeuseDeleted", 1 },
+                    { 3, 5, 0, false, "Tondeuse de luxe automatique", 1, 99.989999999999995, "vendeur@pfegrp5.onmicrosoft.com", 0, "TondeuseIxelles", 1 },
+                    { 4, 6, 0, false, "Tondeuse de luxe automatique", 1, 99.989999999999995, "vendeur@pfegrp5.onmicrosoft.com", 0, "TondeuseCheveux", 1 },
+                    { 5, 6, 0, false, "Tondeuse de luxe automatique", 2, 99.989999999999995, "vendeur@pfegrp5.onmicrosoft.com", 0, "TondeuseCheveux", 1 },
+                    { 6, 5, 0, false, "Tondeuse de luxe automatique", 1, 99.989999999999995, "vendeur@pfegrp5.onmicrosoft.com", 1, "TondeuseVendue", 1 },
+                    { 7, 5, 0, false, "Tondeuse de luxe automatique", 1, 99.989999999999995, "vendeur@pfegrp5.onmicrosoft.com", 2, "TondeuseInvisible", 1 }
                 });
 
             migrationBuilder.CreateIndex(

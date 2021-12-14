@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PFEBackend.Models;
+using System.Security.Claims;
 
 namespace PFEBackend.Controllers
 {
@@ -68,6 +69,21 @@ namespace PFEBackend.Controllers
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
             })
             .ToArray();
+        }
+
+        
+        [HttpGet("/me")]
+        [AllowAnonymous]
+        public string GetMe()
+        {
+            return User.FindFirst("preferred_username")?.Value + "    " + User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value;
+        }
+
+        [HttpGet("/claims")]
+        [AllowAnonymous]
+        public IEnumerable<Claim> GetClaims()
+        {
+            return User.Claims;
         }
     }
 }
