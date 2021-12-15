@@ -14,7 +14,7 @@ namespace PFEBackend.Repository
             _logger = logger;
         }
 
-        // Pour tout le monde
+        // For everyone
 
         public int CountOffer()
         {
@@ -54,6 +54,11 @@ namespace PFEBackend.Repository
             return _context.Offers.Where(o => o.Id == id && o.State == States.Published && o.Deleted == false).FirstOrDefault() ?? throw new RepositoryException(HttpStatusCode.NotFound, "Annonce avec l'ID " + id + "n'existe pas.");
         }
 
+        public IEnumerable<Offer> GetByPlace(string place)
+        {
+            return _context.Offers.Where(o => (o.Place.ToString().Equals(place))  && o.State == States.Published && o.Deleted == false).ToArray() ?? throw new RepositoryException(HttpStatusCode.NotFound, "Aucune annonce pour le campus de "+place+".");
+        }
+
         public IEnumerable<Offer> GetByPrice(Double? minPrice, Double? maxPrice)
         {
             if (minPrice > maxPrice)
@@ -61,7 +66,7 @@ namespace PFEBackend.Repository
             return _context.Offers.Where(o => o.Price >= (minPrice ?? Double.MinValue) && o.Price <= (maxPrice ?? Double.MaxValue) && o.Deleted == false && o.State == States.Published);
         }
 
-        // Pour un user en particulier
+        // For a user in particular
 
         public Offer GetMyById(int id, string seller)
         {
@@ -87,7 +92,7 @@ namespace PFEBackend.Repository
             _context.SaveChanges();
         }
 
-        // Pour un admin
+        // For a admin
 
         public void DeleteOffer(int id)
         {
@@ -141,5 +146,11 @@ namespace PFEBackend.Repository
 
             _context.SaveChanges();
         }
+
+        public IEnumerable<Offer> GetReportOffer()
+        {
+            return _context.Offers.Where(o => o.CountReport > 0 && o.Deleted == false);
+        }
+
     }
 }

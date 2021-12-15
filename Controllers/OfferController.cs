@@ -36,6 +36,13 @@ namespace PFEBackend.Controllers
         }
 
         [HttpGet]
+        [Route("campus/{place}")]
+        public IEnumerable<Offer> GetByPlace(string place)
+        {
+            return _repositoryOffer.GetByPlace(place);
+        }
+
+        [HttpGet]
         [Route("category/{id}")]
         public IEnumerable<Offer> GetByCategory(int id)
         {
@@ -51,10 +58,15 @@ namespace PFEBackend.Controllers
 
         // Prendre un formdata en plus avec les medias
         [HttpPost, DisableRequestSizeLimit]
-        public void AddOffer([FromForm] Offer offer, [FromForm] IFormFileCollection files)
+        public void AddOffer([FromForm] string offerJson, [FromForm] IFormFileCollection files)
         {
-            offer.Seller = "60038da5-5166-40c7-a6f8-8988e4c3cb9f";//User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value;
-            offer.SellerEMail = "60038da5-5166-40c7-a6f8-8988e4c3cb9f";//User.FindFirst("preferred_username")?.Value;
+            Offer offer = Newtonsoft.Json.JsonConvert.DeserializeObject<Offer>(offerJson);
+            if(offer.Title == null || offer.Deleted == true || offer.CountReport != 0 || offer.CategoryId == 0)
+            {
+                throw new RepositoryException(System.Net.HttpStatusCode.Forbidden, "Certains paramètres de l'annonce sont invalides.");
+            }
+            offer.Seller = User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value;
+            offer.SellerEMail = User.FindFirst("preferred_username")?.Value;
             _repositoryOffer.AddOffer(offer, files);
         }
 
@@ -64,29 +76,29 @@ namespace PFEBackend.Controllers
         [Route("me/{id}")]
         public Offer GetMyById(int id)
         {
-            return _repositoryOffer.GetMyById(id, "60038da5-5166-40c7-a6f8-8988e4c3cb9f");//User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value);
+            return _repositoryOffer.GetMyById(id, User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value);
         }
 
         [HttpGet]
         [Route("me")]
         public IEnumerable<Offer> GetMy()
         {
-            return _repositoryOffer.GetMy("60038da5-5166-40c7-a6f8-8988e4c3cb9f");//User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value);
+            return _repositoryOffer.GetMy(User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value);
         }
 
         [HttpPut]
         public void UpdateOffer(Offer offer)
         {
-            offer.Seller = "60038da5-5166-40c7-a6f8-8988e4c3cb9f";//User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value;
-            offer.SellerEMail = "60038da5-5166-40c7-a6f8-8988e4c3cb9f";//User.FindFirst("preferred_username")?.Value;
-            _repositoryOffer.UpdateOffer(offer, "60038da5-5166-40c7-a6f8-8988e4c3cb9f");//User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value);
+            offer.Seller = User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value;
+            offer.SellerEMail = User.FindFirst("preferred_username")?.Value;
+            _repositoryOffer.UpdateOffer(offer, User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value);
         }
 
         [HttpDelete]
         [Route("me/{id}")]
         public void DeleteMyOffer(int id)
         {
-            _repositoryOffer.DeleteMyOffer(id, "60038da5-5166-40c7-a6f8-8988e4c3cb9f");//User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value);
+            _repositoryOffer.DeleteMyOffer(id, User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value);
         }
 
         // Pour un admin
@@ -116,5 +128,12 @@ namespace PFEBackend.Controllers
             _repositoryOffer.UpdateReportOffer(id);
         }
 
+        [Authorize(Roles = "administrator")]
+        [HttpGet]
+        [Route("report")]
+        public IEnumerable<Offer> GetReportOffer()
+        {
+            return _repositoryOffer.GetReportOffer();
+        }
     }
 }

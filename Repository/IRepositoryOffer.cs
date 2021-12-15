@@ -14,6 +14,8 @@ namespace PFEBackend.Repository
 
         IEnumerable<Offer> GetByCategory(int id);
 
+        IEnumerable<Offer> GetByPlace(string place);
+
         IEnumerable<Offer> GetByPrice(Double? minPrice, Double? maxPrice);
 
         void UpdateOffer(Offer offer, string value);
@@ -25,7 +27,11 @@ namespace PFEBackend.Repository
         void AddReportOffer(int id);
 
         void UpdateReportOffer(int id);
+
         IEnumerable<Offer> GetMy(string value);
+
         void DeleteMyOffer(int id, string v);
+
+        IEnumerable<Offer> GetReportOffer();
     }
 }
