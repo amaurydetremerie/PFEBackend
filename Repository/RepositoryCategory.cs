@@ -63,19 +63,34 @@ namespace PFEBackend.Repository
         {
             if (category.Id != category.ParentId)
             {
-                if(!GetChilds(category.Id).Any(c => c.Id == category.Id || c.Id == category.ParentId))
+                if(category.ParentId == null && _context.Categories.Find(category.Id) != null)
                 {
-                    if(!(category.ParentId == null || GetChilds((int)category.ParentId).Any(c => c.Id == category.Id || c.Id == category.ParentId)))
+                    if (!(VerifyChilds(category, category.Id) || VerifyChilds(_context.Categories.Find(category.Id), category.Id)))
                     {
                         Category old = _context.Categories.Find(category.Id) ?? throw new RepositoryException(HttpStatusCode.NotFound, "Catégorie avec l'ID " + category.Id + "n'existe pas.");
                         _context.Entry(old).CurrentValues.SetValues(category);
                         _context.SaveChanges();
                         return;
                     }
+                    throw new RepositoryException(HttpStatusCode.Forbidden, "Boucle parent/enfant détectée.");
                 }
-                throw new RepositoryException(HttpStatusCode.Forbidden, "Boucle parent/enfant détectée.");
+                throw new RepositoryException(HttpStatusCode.Forbidden, "Ce parent n'existe pas.");
             }
             throw new RepositoryException(HttpStatusCode.Forbidden, "Une catégorie ne peut pas être son parent.");
+        }
+
+        private bool VerifyChilds(Category parent, int catId)
+        {
+            bool retour = false;
+            IEnumerable<Category> childs = _context.Categories.Where(c => c.ParentId == parent.Id).Distinct().ToList();
+            foreach (Category child in childs)
+            {
+                if (child.ParentId == catId || child.Id == catId);
+                retour = retour || VerifyChilds(child, catId);
+                if (retour)
+                    break;
+            }
+            return retour;
         }
 
         public IEnumerable<Category> GetParents()
