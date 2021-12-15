@@ -36,10 +36,10 @@ namespace PFEBackend.Controllers
         }
 
         [HttpGet]
-        [Route("campus/{id}")]
-        public IEnumerable<Offer> GetByPlace(int id)
+        [Route("campus/{place}")]
+        public IEnumerable<Offer> GetByPlace(string place)
         {
-            return _repositoryOffer.GetByPlace(id);
+            return _repositoryOffer.GetByPlace(place);
         }
 
         [HttpGet]
