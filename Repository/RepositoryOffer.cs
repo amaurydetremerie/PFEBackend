@@ -30,6 +30,7 @@ namespace PFEBackend.Repository
         {
             Category parent = _context.Categories.Find(id) ?? throw new RepositoryException(HttpStatusCode.NotFound, "Catégorie avec l'ID " + id + "n'existe pas.");
             List<Category> listCategories = new();
+            listCategories.Add(parent);
             listCategories.AddRange(AllChilds(parent));
             List<Offer> listOffers = new();
             foreach (Category category in listCategories.DistinctBy(c => c.Id))
