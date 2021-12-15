@@ -54,6 +54,11 @@ namespace PFEBackend.Repository
             return _context.Offers.Where(o => o.Id == id && o.State == States.Published && o.Deleted == false).FirstOrDefault() ?? throw new RepositoryException(HttpStatusCode.NotFound, "Annonce avec l'ID " + id + "n'existe pas.");
         }
 
+        public IEnumerable<Offer> GetByPlace(string place)
+        {
+            return _context.Offers.Where(o => (o.Place.ToString().Equals(place))  && o.State == States.Published && o.Deleted == false).ToArray() ?? throw new RepositoryException(HttpStatusCode.NotFound, "Aucune annonce pour le campus de "+place+".");
+        }
+
         public IEnumerable<Offer> GetByPrice(Double? minPrice, Double? maxPrice)
         {
             if (minPrice > maxPrice)
@@ -146,5 +151,6 @@ namespace PFEBackend.Repository
         {
             return _context.Offers.Where(o => o.CountReport > 0 && o.Deleted == false);
         }
+
     }
 }

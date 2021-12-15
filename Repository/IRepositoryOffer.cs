@@ -14,6 +14,8 @@ namespace PFEBackend.Repository
 
         IEnumerable<Offer> GetByCategory(int id);
 
+        IEnumerable<Offer> GetByPlace(int id);
+
         IEnumerable<Offer> GetByPrice(Double? minPrice, Double? maxPrice);
 
         void UpdateOffer(Offer offer, string value);
