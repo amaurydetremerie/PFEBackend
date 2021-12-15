@@ -30,7 +30,7 @@ namespace PFEBackend.Repository
         {
             Category parent = _context.Categories.Find(id) ?? throw new RepositoryException(HttpStatusCode.NotFound, "Catégorie avec l'ID " + id + "n'existe pas.");
             List<Category> listCategories = new();
-            ChildsCategories(parent, ref listCategories);
+            listCategories.AddRange(AllChilds(parent));
             List<Offer> listOffers = new();
             foreach (Category category in listCategories.DistinctBy(c => c.Id))
             {
@@ -39,14 +39,16 @@ namespace PFEBackend.Repository
             return listOffers.DistinctBy(o => o.Id);
         }
 
-        private void ChildsCategories(Category parent, ref List<Category> listCategories)
+        private List<Category> AllChilds(Category parent)
         {
-            _context.Entry(parent).Collection(c => c.ChildCategories).Load();
-            listCategories.AddRange(parent.ChildCategories ?? Enumerable.Empty<Category>());
-            foreach(Category childCategory in parent.ChildCategories ?? Enumerable.Empty<Category>())
+            List<Category> childsCat = new();
+            IEnumerable<Category> childs = _context.Categories.Where(c => c.ParentId == parent.Id).ToList();
+            foreach (Category child in childs.Distinct())
             {
-                ChildsCategories(childCategory, ref listCategories);
+                childsCat.AddRange(AllChilds(child));
+                childsCat.Add(child);
             }
+            return childsCat.Distinct().ToList();
         }
 
         public Offer GetById(int id)
