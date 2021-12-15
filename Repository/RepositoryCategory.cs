@@ -63,13 +63,15 @@ namespace PFEBackend.Repository
         {
             if (category.Id != category.ParentId)
             {
-                IList l = new List<Category>(GetChilds(category.Id));
                 if(!GetChilds(category.Id).Any(c => c.Id == category.Id || c.Id == category.ParentId))
                 {
-                    Category old = _context.Categories.Find(category.Id) ?? throw new RepositoryException(HttpStatusCode.NotFound, "Catégorie avec l'ID " + category.Id + "n'existe pas.");
-                    _context.Entry(old).CurrentValues.SetValues(category);
-                    _context.SaveChanges();
-                    return;
+                    if(!(category.ParentId == null || GetChilds((int)category.ParentId).Any(c => c.Id == category.Id || c.Id == category.ParentId)))
+                    {
+                        Category old = _context.Categories.Find(category.Id) ?? throw new RepositoryException(HttpStatusCode.NotFound, "Catégorie avec l'ID " + category.Id + "n'existe pas.");
+                        _context.Entry(old).CurrentValues.SetValues(category);
+                        _context.SaveChanges();
+                        return;
+                    }
                 }
                 throw new RepositoryException(HttpStatusCode.Forbidden, "Boucle parent/enfant détectée.");
             }
