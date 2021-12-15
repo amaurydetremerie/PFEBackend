@@ -54,6 +54,10 @@ namespace PFEBackend.Controllers
         public void AddOffer([FromForm] string offerJson, [FromForm] IFormFileCollection files)
         {
             Offer offer = Newtonsoft.Json.JsonConvert.DeserializeObject<Offer>(offerJson);
+            if(offer.Title == null || offer.Deleted == true || offer.CountReport != 0 || offer.CategoryId == 0)
+            {
+                throw new RepositoryException(System.Net.HttpStatusCode.Forbidden, "Certains paramètres de l'annonce sont invalides.");
+            }
             offer.Seller = User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value;
             offer.SellerEMail = User.FindFirst("preferred_username")?.Value;
             _repositoryOffer.AddOffer(offer, files);
