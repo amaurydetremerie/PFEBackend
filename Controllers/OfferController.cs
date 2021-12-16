@@ -37,7 +37,7 @@ namespace PFEBackend.Controllers
 
         [HttpGet]
         [Route("campus/{place}")]
-        public IEnumerable<Offer> GetByPlace(string place)
+        public IEnumerable<Offer> GetByPlace(Places place)
         {
             return _repositoryOffer.GetByPlace(place);
         }

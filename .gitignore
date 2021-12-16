@@ -369,4 +369,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/StaticFiles
+/StaticFiles/*
+!/StaticFiles/.gitkeep
