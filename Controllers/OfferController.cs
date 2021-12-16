@@ -37,8 +37,16 @@ namespace PFEBackend.Controllers
 
         [HttpGet]
         [Route("campus/{place}")]
-        public IEnumerable<Offer> GetByPlace(string place)
+        public IEnumerable<Offer> GetByPlace(string stringPlace)
         {
+            Places place;
+            try
+            {
+                place = Newtonsoft.Json.JsonConvert.DeserializeObject<Places>(stringPlace);
+            } catch (Exception ex)
+            {
+                throw new RepositoryException(System.Net.HttpStatusCode.NotFound, "Le campus " + stringPlace + " n'existe pas.");
+            }
             return _repositoryOffer.GetByPlace(place);
         }
 
