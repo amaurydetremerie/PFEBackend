@@ -13,17 +13,11 @@ using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddHttpLogging(options =>
-{
-    options.LoggingFields = HttpLoggingFields.RequestPropertiesAndHeaders |
-                            HttpLoggingFields.RequestBody;
-});
-
 // Add AzureAD authentication with a Bearer Token
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
 
-// Nécéssaire d'être connecté + d'avoir un rôle user ou administrator pour accéder à l'app.
+// NÃ©cÃ©ssaire d'Ãªtre connectÃ© + d'avoir un rÃ´le user ou administrator pour accÃ©der Ã  l'app.
 builder.Services.AddControllers(
     options =>
     {
@@ -39,7 +33,7 @@ builder.Services.AddControllers(
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-// Connection à la DB
+// Connection Ã  la DB
 builder.Services.AddDbContext<VinciMarketContext>(options => 
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DB")
