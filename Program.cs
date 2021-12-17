@@ -47,7 +47,23 @@ builder.Services.AddDbContext<VinciMarketContext>(options =>
 );
 
 // Ajout de CORS (sinon erreur frontend)
-builder.Services.AddCors();
+builder.Services.AddCors(opt =>
+
+{
+
+    opt.AddPolicy(name: "cors", builder =>
+
+    {
+
+        builder.AllowAnyOrigin()
+
+        .AllowAnyHeader()
+
+        .AllowAnyMethod();
+
+    });
+
+});
 
 // Ajout du bind d'interface des repository
 builder.Services.AddScoped<IRepositoryCategory, RepositoryCategory>();
@@ -59,7 +75,7 @@ var app = builder.Build();
 app.UseHttpLogging();
 
 // Configuration des CORS
-app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+app.UseCors("cors");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
